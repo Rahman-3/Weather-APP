@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App - Easy Tutorials</title>
+    <link rel="stylesheet" href="mutu.css">
+</head>
+<body>
+
+<div class="card">
+    <div class="search">
+        <input type="text" placeholder="Enter city name" spellcheck="false" id="city-input">
+        <button onclick="getWeatherData()"><img src="images/search.png" alt="Search"></button>
+    </div>
+    <div class="weather">
+        <img src="images/weather.png" class="weather-icon" alt="Weather Icon">
+        <h1 class="temp">30°C</h1>
+        <h2 class="city">DHAKA</h2>
+        <div class="details">
+            <div class="col">
+                <img src="images/humidity.png" alt="Humidity Icon">
+                <p class="humidity">50%</p>
+                <p>Humidity</p>
+            </div>
+            <div class="col">
+                <img src="images/wind.png" alt="Wind Icon">
+                <p class="wind">15km/h</p>
+                <p>Wind speed</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+const apiKey = "78c9743b07ed00642a9ecfed7c85af12";
+const apiUrl = "https://api.openweathermap.org/data/2.5/weather";
+
+async function getWeatherData() {
+    const cityName = document.getElementById("city-input").value;
+    const queryUrl = `${apiUrl}?q=${cityName}&units=metric&appid=${apiKey}`;
+    
+    try {
+        const response = await fetch(queryUrl);
+        const data = await response.json();
+
+        console.log(data);
+
+        document.querySelector(".city").innerHTML = data.name;
+        document.querySelector(".temp").innerHTML = `${data.main.temp}°C`;
+        document.querySelector(".humidity").innerHTML = `${data.main.humidity}%`;
+        document.querySelector(".wind").innerHTML = `${data.wind.speed}km/h`;
+        document.querySelector(".weather-icon").src = `http://openweathermap.org/img/w/${data.weather[0].icon}.png`;
+    } catch (error) {
+        console.error("Error fetching weather data:", error);
+    }
+}
+
+// You may remove this line if you don't want to automatically fetch weather data on page load.
+// getWeatherData();
+
+</script>
+
+</body>
+</html>
